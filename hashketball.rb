@@ -183,19 +183,21 @@ end
 
 def big_shoe_rebounds
   shoe_size_array=[]
+  shoe_of_biggest_player = 0
+  rebounds = 0
   game_hash.each do |team, data|
-    data[:players].each do |stat,value|
-      if stat == :shoe
-        shoe_size_array<<stat[:shoe]
-      end
-      shoe_size_array.sort
-      shoe_of_biggest_player = shoe_size_array.last
-    end
-  data[:players].each do |stat,value|
-      if stat[:shoe] == shoe_of_biggest_player
-        rebounds = stat[:rebounds]
-      end
+    data[:players].each do |player,stats|
+      shoe_size_array<<stats[:shoe]
     end
   end
+  shoe_size_array.sort
+  shoe_of_biggest_player = shoe_size_array.last
+  game_hash.each do |team, data|
+    data[:players].each do |player,stats|
+        if stats[:shoe] == shoe_of_biggest_player
+          rebounds = stats[:rebounds]
+        end
+      end
+    end
   return rebounds
 end
